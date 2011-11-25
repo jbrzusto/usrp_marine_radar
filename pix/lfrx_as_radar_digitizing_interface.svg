@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="lfrx_as_radar_digitizing_interface.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lstart"
+       style="overflow:visible">
+      <path
+         id="path3268"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none"
+         transform="scale(0.8) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;">
+      <path
+         id="path3271"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+    <inkscape:perspective
+       id="perspective2410"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="364.28571"
+     inkscape:cy="592.60804"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1274"
+     inkscape:window-height="993"
+     inkscape:window-x="0"
+     inkscape:window-y="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <image
+       y="240.93359"
+       x="82.214317"
+       id="image2412"
+       height="600"
+       width="607"
+       sodipodi:absref="/home/john/hw/USRP/lfrx_1_flat.jpg"
+       xlink:href="lfrx_1_flat.jpg"
+       sodipodi:insensitive="true" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="489.28574"
+       y="803.07648"
+       id="text2416"><tspan
+         sodipodi:role="line"
+         x="489.28574"
+         y="803.07648"
+         style="font-size:20px"
+         id="tspan2420">video</tspan><tspan
+         sodipodi:role="line"
+         x="489.28574"
+         y="803.07648"
+         style="font-size:20px"
+         id="tspan2470"> (-1.0 to +1.0 V)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="381.42859"
+       y="877.36224"
+       id="text2424"><tspan
+         sodipodi:role="line"
+         id="tspan2426"
+         x="381.42859"
+         y="877.36224"
+         style="font-size:20px">trigger </tspan><tspan
+         sodipodi:role="line"
+         x="381.42859"
+         y="902.36224"
+         style="font-size:20px"
+         id="tspan2466">(-1.0 to +1.0 V)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="11.98522"
+       y="635.02258"
+       id="text2436"><tspan
+         sodipodi:role="line"
+         id="tspan2438"
+         x="11.98522"
+         y="635.02258"
+         style="font-size:20px">ARP (digital, </tspan><tspan
+         sodipodi:role="line"
+         x="11.98522"
+         y="660.02258"
+         style="font-size:20px"
+         id="tspan2446">0.0 to 3.3V,</tspan><tspan
+         sodipodi:role="line"
+         x="11.98522"
+         y="685.02258"
+         style="font-size:20px"
+         id="tspan2448"> LVCMOS)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="8.4563198"
+       y="548.59406"
+       id="text2440"><tspan
+         sodipodi:role="line"
+         id="tspan2442"
+         x="8.4563198"
+         y="548.59406"
+         style="font-size:20px">ACP (digital,</tspan><tspan
+         sodipodi:role="line"
+         x="8.4563198"
+         y="573.59406"
+         style="font-size:20px"
+         id="tspan2452">0.0 to 3.3V,</tspan><tspan
+         sodipodi:role="line"
+         x="8.4563198"
+         y="598.59406"
+         style="font-size:20px"
+         id="tspan2454">LVCMOS)</tspan></text>
+    <path
+       sodipodi:type="arc"
+       id="path2450"
+       style="fill:#000000;stroke:none"
+       sodipodi:cx="417.85715"
+       sodipodi:cy="386.64789"
+       sodipodi:rx="1.5"
+       sodipodi:ry="1.5"
+       d="M 419.35715,386.64789 A 1.5,1.5 0 1 1 416.35715,386.64789 A 1.5,1.5 0 1 1 419.35715,386.64789 z" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path2460"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(-72.14286,449.28571)" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path2462"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(-72.49999,433.92857)" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lstart)"
+       d="M 407.85714,690.93361 L 407.85714,844.50504"
+       id="path2464"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lstart)"
+       d="M 503.57143,693.07647 L 503.57143,767.36218"
+       id="path2468"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="619.15387"
+       y="361.49863"
+       id="text2472"><tspan
+         sodipodi:role="line"
+         x="619.15387"
+         y="361.49863"
+         style="font-size:20px"
+         id="tspan2478">video bias</tspan><tspan
+         sodipodi:role="line"
+         x="619.15387"
+         y="386.49863"
+         style="font-size:20px"
+         id="tspan2485">(analog, </tspan><tspan
+         sodipodi:role="line"
+         x="619.15387"
+         y="411.49863"
+         style="font-size:20px"
+         id="tspan2487">0.0 to 3.3V,</tspan><tspan
+         sodipodi:role="line"
+         x="619.15387"
+         y="436.49863"
+         style="font-size:20px"
+         id="tspan2489">1.0 mA)</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="M 457.14286,515.93361 L 457.14286,426.6479 L 594.28571,426.6479 L 595,355.21932 L 615,355.21932"
+       id="path2491"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path2493"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(202.50001,336.07142)" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="618.85046"
+       y="476.14151"
+       id="text8207"><tspan
+         sodipodi:role="line"
+         x="618.85046"
+         y="476.14151"
+         style="font-size:20px"
+         id="tspan8209">ARP gain</tspan><tspan
+         sodipodi:role="line"
+         x="618.85046"
+         y="501.14151"
+         style="font-size:20px"
+         id="tspan8211">(analog, </tspan><tspan
+         sodipodi:role="line"
+         x="618.85046"
+         y="526.14154"
+         style="font-size:20px"
+         id="tspan8213">0.0 to 3.3V,</tspan><tspan
+         sodipodi:role="line"
+         x="618.85046"
+         y="551.14154"
+         style="font-size:20px"
+         id="tspan8215">1.0 mA)</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow1Lend);stroke-opacity:1"
+       d="M 470.92857,510.43361 L 470.92857,469.71933 L 614.49999,469.00504"
+       id="path8217"
+       sodipodi:nodetypes="ccc" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path8219"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(216.78572,336.07143)" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="619.78448"
+       y="586.85577"
+       id="text8221"><tspan
+         sodipodi:role="line"
+         x="619.78448"
+         y="586.85577"
+         style="font-size:20px"
+         id="tspan8223">ACP gain</tspan><tspan
+         sodipodi:role="line"
+         x="619.78448"
+         y="611.85577"
+         style="font-size:20px"
+         id="tspan8225">(analog, </tspan><tspan
+         sodipodi:role="line"
+         x="619.78448"
+         y="636.85577"
+         style="font-size:20px"
+         id="tspan8227">0.0 to 3.3V,</tspan><tspan
+         sodipodi:role="line"
+         x="619.78448"
+         y="661.85577"
+         style="font-size:20px"
+         id="tspan8229">1.0 mA)</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="M 486.42857,515.21932 L 582.14286,515.21932 L 582.14286,579.50504 L 615.71429,579.50504"
+       id="path8231" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path8754"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(232.5,335.35715)" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path8756"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(-56.78571,433.92857)" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path8758"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(-57.499995,448.92857)" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="M 144.28571,628.79075 L 174.28571,628.79075"
+       id="path8760" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="M 106.42857,591.6479 L 146.42857,591.6479 L 146.42857,614.50504 L 173.57143,614.50504"
+       id="path9283" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-weight:normal;text-align:center;text-anchor:middle;fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;-inkscape-font-specification:Bitstream Vera Sans"
+       x="8.5714283"
+       y="436.64789"
+       id="text9806"><tspan
+         sodipodi:role="line"
+         id="tspan9808"></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="10.58245"
+       y="440.07004"
+       id="text9810"><tspan
+         sodipodi:role="line"
+         x="10.58245"
+         y="440.07004"
+         style="font-size:12px"
+         id="tspan9816">SERIN0 RxD</tspan><tspan
+         sodipodi:role="line"
+         x="10.58245"
+         y="455.07004"
+         style="font-size:12px"
+         id="tspan9823">SERIN0 TxD</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow1Lend);stroke-opacity:1"
+       d="M 86.428572,438.07648 L 172.85714,438.07648"
+       id="path9825" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow1Lend);stroke-opacity:1"
+       d="M 86.071427,452.36218 L 172.5,452.36218"
+       id="path10348" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path10350"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(-71.785709,258.21428)" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path10352"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(-71.071424,273.21429)" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="10.75286"
+       y="410.5621"
+       id="text10365"><tspan
+         sodipodi:role="line"
+         x="10.75286"
+         y="410.5621"
+         style="font-size:12px"
+         id="tspan10367">SERIN1 RxD</tspan><tspan
+         sodipodi:role="line"
+         x="10.75286"
+         y="425.5621"
+         style="font-size:12px"
+         id="tspan10369">SERIN1 TxD</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow1Lend);stroke-opacity:1"
+       d="M 86.598982,408.56853 L 173.02755,408.56853"
+       id="path10371" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow1Lend);stroke-opacity:1"
+       d="M 86.241837,422.85424 L 172.67041,422.85424"
+       id="path10373" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path10375"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(-71.615299,228.70633)" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path10377"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(-70.901014,243.70634)" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="10.75286"
+       y="380.5621"
+       id="text10381"><tspan
+         sodipodi:role="line"
+         x="10.75286"
+         y="380.5621"
+         style="font-size:12px"
+         id="tspan10383">SERIN2 RxD</tspan><tspan
+         sodipodi:role="line"
+         x="10.75286"
+         y="395.5621"
+         style="font-size:12px"
+         id="tspan10385">SERIN2 TxD</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow1Lend);stroke-opacity:1"
+       d="M 86.598982,378.56853 L 173.02755,378.56853"
+       id="path10387" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow1Lend);stroke-opacity:1"
+       d="M 86.241837,392.85424 L 172.67041,392.85424"
+       id="path10389" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path10391"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(-71.615299,198.70633)" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path10393"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(-70.901014,213.70634)" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="10.75286"
+       y="349.84781"
+       id="text10397"><tspan
+         sodipodi:role="line"
+         x="10.75286"
+         y="349.84781"
+         style="font-size:12px"
+         id="tspan10399">SERIN3 RxD</tspan><tspan
+         sodipodi:role="line"
+         x="10.75286"
+         y="364.84781"
+         style="font-size:12px"
+         id="tspan10401">SERIN3 TxD</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow1Lend);stroke-opacity:1"
+       d="M 86.598982,347.85425 L 173.02755,347.85425"
+       id="path10403" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow1Lend);stroke-opacity:1"
+       d="M 86.241837,362.13995 L 172.67041,362.13995"
+       id="path10405" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path10407"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(-71.615299,167.99205)" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path10409"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(-70.901014,182.99206)" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="21.296736"
+       y="253.64148"
+       id="text10411"><tspan
+         sodipodi:role="line"
+         x="21.296736"
+         y="253.64148"
+         style="font-size:20px"
+         id="tspan10417">4 x Serial I/O (could use pairs with grounds to allow RS-422)</tspan><tspan
+         sodipodi:role="line"
+         x="21.296736"
+         y="278.64148"
+         style="font-size:20px"
+         id="tspan10424">(digital</tspan><tspan
+         sodipodi:role="line"
+         x="21.296736"
+         y="303.64148"
+         style="font-size:20px"
+         id="tspan10426">0.0 to 3.3V</tspan><tspan
+         sodipodi:role="line"
+         x="21.296736"
+         y="328.64148"
+         style="font-size:20px"
+         id="tspan10428">LVCMOS):</tspan></text>
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path10430"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(-55.357138,272.5)" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path10432"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(-56.071424,242.5)" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path10434"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(-56.071424,213.92857)" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path10436"
+       sodipodi:cx="254.64285"
+       sodipodi:cy="179.86218"
+       sodipodi:rx="1.7857143"
+       sodipodi:ry="1.7857143"
+       d="M 256.42857,179.86218 A 1.7857143,1.7857143 0 1 1 252.85714,179.86218 A 1.7857143,1.7857143 0 1 1 256.42857,179.86218 z"
+       transform="translate(-56.071424,183.21429)" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-weight:normal;text-align:center;text-anchor:middle;fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;-inkscape-font-specification:Bitstream Vera Sans"
+       x="106.42857"
+       y="85.933609"
+       id="text10438"><tspan
+         sodipodi:role="line"
+         id="tspan10440"
+         x="106.42857"
+         y="85.933609" /></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="78.048973"
+       y="123.99862"
+       id="text10450"><tspan
+         sodipodi:role="line"
+         x="78.048973"
+         y="123.99862"
+         style="font-size:20px"
+         id="tspan10456">Connection schema for USRP-1 as radar digitizing card,</tspan><tspan
+         sodipodi:role="line"
+         x="78.048973"
+         y="148.99863"
+         style="font-size:20px"
+         id="tspan10465">using 1 LFRX board.  All inputs need over-voltage protection.</tspan></text>
+  </g>
+</svg>

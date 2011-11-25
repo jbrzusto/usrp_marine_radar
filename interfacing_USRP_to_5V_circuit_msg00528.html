@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><!-- MHonArc v2.6.10 -->
+<!--X-Subject: [Fwd: Re: [Discuss&#45;gnuradio] I/O lines standards] -->
+<!--X-From-R13: "Rba Zngunz" <qwyNzbagnan.pbz> -->
+<!--X-Date: Fri, 20 Mar 2009 20:00:27 &#45;0400 -->
+<!--X-Message-Id: 1678.216.14.243.135.1237593617.squirrel@webmail.montana.com -->
+<!--X-Content-Type: text/plain -->
+<!--X-Head-End-->
+
+
+
+<title>[Fwd: Re: [Discuss-gnuradio] I/O lines standards]</title>
+</head><body>
+<center>
+<table bgcolor="#000000" border="0" cellpadding="0" cellspacing="2">
+<tbody><tr><td><table bgcolor="#ffffcc" border="0">
+<tbody><tr><td><big><b>discuss-gnuradio</b></big></td></tr></tbody></table></td></tr></tbody></table>
+<small><nobr>[<a href="http://lists.gnu.org/archive/html/discuss-gnuradio/">Top</a>][<a href="http://lists.gnu.org/archive/html">All Lists</a>]</nobr></small>
+<form method="get" action="/archive/cgi-bin/namazu.cgi">
+<input name="query" size="30" type="text">
+<input name="submit" value="Search" type="submit">
+<input name="idxname" value="discuss-gnuradio" type="hidden">
+<a href="http://lists.gnu.org/archive/cgi-bin/namazu.cgi?idxname=discuss-gnuradio">Advanced</a>
+</form>
+
+</center>
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<a href="http://lists.gnu.org/archive/html/discuss-gnuradio/2009-03/msg00527.html">Date Prev</a>][<a href="http://lists.gnu.org/archive/html/discuss-gnuradio/2009-03/msg00529.html">Date Next</a>][<a href="http://lists.gnu.org/archive/html/discuss-gnuradio/2009-03/msg00527.html">Thread Prev</a>][<a href="http://lists.gnu.org/archive/html/discuss-gnuradio/2009-03/msg00531.html">Thread Next</a>][<a href="http://lists.gnu.org/archive/html/discuss-gnuradio/2009-03/index.html#00528">Date Index</a>][<a href="http://lists.gnu.org/archive/html/discuss-gnuradio/2009-03/threads.html#00528">Thread Index</a>]
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<h2>[Fwd: Re: [Discuss-gnuradio] I/O lines standards]</h2>
+<hr>
+<table border="0">
+<tbody>
+<tr>
+<td align="right" valign="top">
+<b>From</b>: </td>
+<td align="left">
+Don Latham</td>
+</tr>
+<!--X-Subject-Header-End-->
+<!--X-Head-of-Message-->
+
+<tr>
+<td align="right" valign="top">
+<b>Subject</b>: </td>
+<td align="left">
+[Fwd: Re: [Discuss-gnuradio] I/O lines standards]</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">
+<b>Date</b>: </td>
+<td align="left">
+Fri, 20 Mar 2009 18:00:17 -0600 (MDT)</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">
+<b>User-agent</b>: </td>
+<td align="left">
+SquirrelMail/1.4.9a</td>
+</tr>
+
+</tbody>
+</table>
+<!--X-Head-of-Message-End-->
+<!--X-Head-Body-Sep-Begin-->
+<hr>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<pre>Hello the list: I need to use the digital I/O from my 2400 daughterboard
+to drive a sequencer for a t/r system. I wanted to convert the USRP lines
+to 5 V safely.
+I tried 5 Fairchild type H11L1 optoisolators, current production,
+available from Digi-Key, in a test setup. Put a 1k ohm resistor in series
+with the input diode. All 5 drew less than 2 ma current at 3.3 volts, and
+switched state from low to high at .8 to .9 ma (about 2.7 volts).
+According to the spec less than 5 ma drain per line, these will be safe to
+use as output buffering and transition to 5v logic. Note that they will be
+high (5 v) with the inputs at either 3-state or low. To use 5v logic with
+the USRP lines as inputs, use the Fairchild driving a voltage divider to
+yield about 2.5 volts to the input pin. Note the Altera device is
+operating as LVCMOS so it will not draw enough current to unbalance the
+divider. The H11L1 is an open collector output, so a simple divider with 2
+1k resistors or even larger should work fine. With the H11L1 connected to
+a 5v supply, no condition will exceed the 5 ma limit.
+Note that you can use the USRP lines directly with any of the PIC
+processors that run on 3.3 volts. I still suggest optoisolation just
+because there are two different power supplies involved...
+Naturally, I'm not assuming any responsibility if your USRP gets goofed :-)
+Don
+
+
+---------------------------- Original Message ----------------------------
+Subject: Re: [Discuss-gnuradio] I/O lines standards
+From:    "Matt Ettus" &lt;address@hidden&gt;
+Date:    Fri, March 20, 2009 15:36
+To:      "Don Latham" &lt;address@hidden&gt;
+--------------------------------------------------------------------------
+
+
+5 each
+
+Don Latham wrote:
+&gt;<i> Sorry, Matt, one more Q? 5 ma/line or 5 ma total?</i>
+&gt;<i> Thanks v much for your time!</i>
+&gt;<i> Don</i>
+&gt;<i></i>
+&gt;<i> Matt Ettus</i>
+&gt;<i>&gt; Don Latham wrote:</i>
+&gt;<i>&gt;&gt; I'm just checking so's I don't destroy my USRP mboard. The I/O lines</i>
+&gt;<i>&gt;&gt; such</i>
+&gt;<i>&gt;&gt; as io_tx_13 etc. that are available on the flex 2400's seem to go</i>
+&gt;<i>&gt;&gt; straight</i>
+&gt;<i>&gt;&gt; to the Cyclone FPGA. If that's the case, are they set to LVCMOS or</i>
+&gt;<i>&gt;&gt; LVTTL?</i>
+&gt;<i>&gt;&gt; And, is the voltage used 3.3 V? I think I read the answer on the</i>
+&gt;<i>&gt;&gt; schematics, but I need to check!</i>
+&gt;<i>&gt;&gt; Thanks, All.</i>
+&gt;<i>&gt;&gt;</i>
+&gt;<i>&gt;&gt;</i>
+&gt;<i>&gt;</i>
+&gt;<i>&gt; They go straight to the FPGA.  They are 3.3V CMOS.  Don't pull more than</i>
+&gt;<i>&gt; about 5mA.</i>
+&gt;<i>&gt;</i>
+&gt;<i>&gt; Matt</i>
+&gt;<i>&gt;</i>
+&gt;<i></i>
+&gt;<i></i>
+
+
+
+
+-- 
+Dr. Don Latham AJ7LL
+Six Mile Systems LLP
+17850 Six Mile Road
+POB 134
+Huson, MT, 59846
+VOX 406-626-4304
+www.lightningforensics.com
+www.sixmilesystems.com
+
+
+
+
+</pre>
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<hr>
+<form method="post" action="/mp/yyz.py" enctype="multipart/form-data">
+<input name="a" value="djl" type="hidden">
+<input name="b" value="[Fwd: Re: [Discuss-gnuradio] I/O lines standards]" type="hidden">
+<input name="d" value="1678.216.14.243.135.1237593617.squirrel@webmail.montana.com" type="hidden">
+<input name="c" value="montana.com" type="hidden">
+<center>reply via email to<br><input value=" Don Latham " type="submit"></center>
+</form>
+<hr>
+<table width="100%">
+<tbody><tr><td align="left">[Prev in Thread]</td>
+<td align="center"><b>Current Thread</b></td>
+<td align="right">[Next in Thread]</td></tr></tbody></table>
+<ul>
+<li><font color="#666666"><strong>[Fwd: Re: [Discuss-gnuradio] I/O lines standards]</strong>,
+<em>Don Latham</em></font>&nbsp;<b>&lt;=</b>
+</li></ul>
+
+<hr>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<li>Prev by Date:
+<strong><a href="http://lists.gnu.org/archive/html/discuss-gnuradio/2009-03/msg00527.html">[Discuss-gnuradio] No Packet Reception for benchmark_rx and No	PINGing for tunnel.py</a></strong>
+</li>
+<li>Next by Date:
+<strong><a href="http://lists.gnu.org/archive/html/discuss-gnuradio/2009-03/msg00529.html">Re: [Discuss-gnuradio] Using one USRP</a></strong>
+</li>
+<li>Previous by thread:
+<strong><a href="http://lists.gnu.org/archive/html/discuss-gnuradio/2009-03/msg00527.html">[Discuss-gnuradio] No Packet Reception for benchmark_rx and No	PINGing for tunnel.py</a></strong>
+</li>
+<li>Next by thread:
+<strong><a href="http://lists.gnu.org/archive/html/discuss-gnuradio/2009-03/msg00531.html">[Discuss-gnuradio] usrp2 reference clock</a></strong>
+</li>
+<li>Index(es):
+<ul>
+<li><a href="http://lists.gnu.org/archive/html/discuss-gnuradio/2009-03/index.html#00528"><strong>Date</strong></a></li>
+<li><a href="http://lists.gnu.org/archive/html/discuss-gnuradio/2009-03/threads.html#00528"><strong>Thread</strong></a></li>
+</ul>
+</li>
+</ul>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</body></html>
