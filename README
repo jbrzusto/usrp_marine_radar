@@ -1,1 +1,32 @@
 This tree holds host-side code for using USRPs as digitizers for marine radars.
+
+TODO
+- can we do a quick mod on the LFRX board to get ability to bias input to the high speed
+  ADCs? (i.e. trigger and video signals, as currently set up)
+  Say, connect output of DAC_D to pin 2 (V_OCM) on the two AD813X differential
+  op amps?  Currently, V_OCM is set to 3.3 V / 2 = 1.65 V via a resistor ladder
+  voltage divider, but with this mod, we'd get to set V_OCM to anywhere between
+  0 and +3.3 V with 12 bit resolution.  This would require adding a command to
+  the firmware to allow us to set the value of DAC_D (i.e. SIGDELT), since
+  AD9860/62 registers are not accessible from the FPGA.
+
+- if so, should we send ACP and ARP via this modded LFRX and a 220 ohm resistor as
+  we do for trigger
+
+I think yes to both.  We could also get away with using one LFRX board and hook
+up ACP and ARP to AUX_ADC_A1 and AUX_ADC_A2, but this would require sampling them
+at high rate on the firmware side and then writing the results to new registers
+on the FPGA so they could be packed into pulse metadata (which the firmware doesn't
+see).  This design would be tricky and the sampling rate might really limit our
+timing ability; e.g.: sampling at 1 kHz on each would give 0.14 degree precision and
+sampling at 20 kHz would give 0.007 degree precision.  So maybe it is feasible.  
+
+1 May 2012  Change to LFRX front-end board:
+It appears the output resistance of the 12V heading line on Furuno radars is variable
+enough and my choice of resistors for voltage dividers was close enough to the edge
+case that some radars would not work with the 1K to ground line and 4.7K on input.
+So I've replaced the 1K resistor with a 2K pot, and this fixes the problem for my
+radar at least (Harrier).  Hopefully this board will allow Sarina to get her radar
+working too.
+
+
