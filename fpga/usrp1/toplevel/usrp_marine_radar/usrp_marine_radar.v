@@ -44,7 +44,7 @@ module usrp_marine_radar
  input wire [11:0] rx_a_a, // video 
  input wire [11:0] rx_b_a, // trigger
  input wire [11:0] rx_a_b, // heading (with dual LFRX configuration)
- input wire [11:0] rx_b_b, // azimuth (when using 4
+ input wire [11:0] rx_b_b, // azimuth (with dual LFRX configuration)
   // USB interface
  input 		   usbclk,
  input wire [2:0]  usbctl,
@@ -83,17 +83,38 @@ module usrp_marine_radar
    wire        vid_negate;
    wire [11:0] trig_thresh_excite;
    wire [11:0] trig_thresh_relax;
-   wire ACP_thresh_excite;
-   wire ACP_thresh_relax;
-   wire [15:0] ACP_latency;
-   wire ARP_thresh_excite;
-   wire ARP_thresh_relax;
-   wire [15:0] ARP_latency;
-   wire [15:0] trig_delay;
-   wire [15:0] trig_latency;
-   wire [15:0] n_samples;
+   wire [11:0] ACP_thresh_excite;
+   wire [11:0] ACP_thresh_relax;
+   wire [31:0] ACP_latency;
+   wire [11:0] ARP_thresh_excite;
+   wire [11:0] ARP_thresh_relax;
+   wire [31:0] ARP_latency;
+   wire [31:0] trig_delay;
+   wire [31:0] trig_latency;
+   wire [31:0] n_samples;
    wire [2:0]  marine_radar_mode; // mode: 0 = normal; 1 = raw video signal; 2 = raw trigger signal; 3 = raw ARP signal; 4 = raw ACP signal;
    // 5 = interleave all raw
+
+   // multiplex selection for signal sources:
+   wire [31:0] signal_sources;
+
+   // Components for each signal:
+
+   wire [7:0]  VID_source = signal_sources[31:24];
+   wire [7:0]  TRG_source = signal_sources[23:16];
+   wire [7:0]  ARP_source = signal_sources[15:8];
+   wire [7:0]  ACP_source = signal_sources[7:0];
+
+   // each component is a selector from this list:
+   
+`define SIGNAL_SOURCE_RX_A_A	8'd0
+`define SIGNAL_SOURCE_RX_B_A	8'd1
+`define SIGNAL_SOURCE_RX_A_B	8'd2
+`define SIGNAL_SOURCE_RX_B_B	8'd3
+`define SIGNAL_SOURCE_IO_RX_A_0 8'd4
+`define SIGNAL_SOURCE_IO_RX_A_1 8'd5
+`define SIGNAL_SOURCE_IO_RX_B_0 8'd6
+`define SIGNAL_SOURCE_IO_RX_B_1 8'd7
 
    // strobes asserted for one clk64 tick when each signal is detected:
    wire       trigger_strobe;
@@ -144,11 +165,49 @@ module usrp_marine_radar
 
    wire counter = settings[1];
 
-   wire [11:0] VID_signal = rx_a_a[11:0]; // ADC output for digitized video
-   wire [11:0] TRG_signal = rx_b_a[11:0]; // ADC output for digitized trigger
-   
-   wire ARP_signal = io_rx_a[1];  // auxilliary digital input for ARP
-   wire ACP_signal = io_rx_a[0];  // auxilliary digital input for ACP
+   wire [11:0] VID_signal = 
+	       (VID_source == `SIGNAL_SOURCE_RX_A_A) ? rx_a_a[11:0] :
+	       (VID_source == `SIGNAL_SOURCE_RX_B_A) ? rx_b_a[11:0] :
+	       (VID_source == `SIGNAL_SOURCE_RX_A_B) ? rx_a_b[11:0] :
+	       (VID_source == `SIGNAL_SOURCE_RX_B_B) ? rx_b_b[11:0] :
+	       (VID_source == `SIGNAL_SOURCE_IO_RX_A_0) ? {io_rx_a[0], 11'b0}:
+	       (VID_source == `SIGNAL_SOURCE_IO_RX_A_1) ? {io_rx_a[1], 11'b0}:
+	       (VID_source == `SIGNAL_SOURCE_IO_RX_B_0) ? {io_rx_b[0], 11'b0}:
+	       (VID_source == `SIGNAL_SOURCE_IO_RX_B_1) ? {io_rx_b[1], 11'b0}:
+	       {12'b0};
+
+   wire [11:0] TRG_signal = 
+	       (TRG_source == `SIGNAL_SOURCE_RX_A_A) ? rx_a_a[11:0] :
+	       (TRG_source == `SIGNAL_SOURCE_RX_B_A) ? rx_b_a[11:0] :
+	       (TRG_source == `SIGNAL_SOURCE_RX_A_B) ? rx_a_b[11:0] :
+	       (TRG_source == `SIGNAL_SOURCE_RX_B_B) ? rx_b_b[11:0] :
+	       (TRG_source == `SIGNAL_SOURCE_IO_RX_A_0) ? {io_rx_a[0], 11'b0}:
+	       (TRG_source == `SIGNAL_SOURCE_IO_RX_A_1) ? {io_rx_a[1], 11'b0}:
+	       (TRG_source == `SIGNAL_SOURCE_IO_RX_B_0) ? {io_rx_b[0], 11'b0}:
+	       (TRG_source == `SIGNAL_SOURCE_IO_RX_B_1) ? {io_rx_b[1], 11'b0}:
+	       {12'b0};
+
+   wire [11:0] ARP_signal = 
+	       (ARP_source == `SIGNAL_SOURCE_RX_A_A) ? rx_a_a[11:0] :
+	       (ARP_source == `SIGNAL_SOURCE_RX_B_A) ? rx_b_a[11:0] :
+	       (ARP_source == `SIGNAL_SOURCE_RX_A_B) ? rx_a_b[11:0] :
+	       (ARP_source == `SIGNAL_SOURCE_RX_B_B) ? rx_b_b[11:0] :
+	       (ARP_source == `SIGNAL_SOURCE_IO_RX_A_0) ? {io_rx_a[0], 11'b0}:
+	       (ARP_source == `SIGNAL_SOURCE_IO_RX_A_1) ? {io_rx_a[1], 11'b0}:
+	       (ARP_source == `SIGNAL_SOURCE_IO_RX_B_0) ? {io_rx_b[0], 11'b0}:
+	       (ARP_source == `SIGNAL_SOURCE_IO_RX_B_1) ? {io_rx_b[1], 11'b0}:
+	       {12'b0};
+
+   wire [11:0] ACP_signal = 
+	       (ACP_source == `SIGNAL_SOURCE_RX_A_A) ? rx_a_a[11:0] :
+	       (ACP_source == `SIGNAL_SOURCE_RX_B_A) ? rx_b_a[11:0] :
+	       (ACP_source == `SIGNAL_SOURCE_RX_A_B) ? rx_a_b[11:0] :
+	       (ACP_source == `SIGNAL_SOURCE_RX_B_B) ? rx_b_b[11:0] :
+	       (ACP_source == `SIGNAL_SOURCE_IO_RX_A_0) ? {io_rx_a[0], 11'b0}:
+	       (ACP_source == `SIGNAL_SOURCE_IO_RX_A_1) ? {io_rx_a[1], 11'b0}:
+	       (ACP_source == `SIGNAL_SOURCE_IO_RX_B_0) ? {io_rx_b[0], 11'b0}:
+	       (ACP_source == `SIGNAL_SOURCE_IO_RX_B_1) ? {io_rx_b[1], 11'b0}:
+	       {12'b0};
    
    // output of stage i of pipeline is sample_i, which is ready when strobe_i goes high
    
@@ -236,7 +295,7 @@ module usrp_marine_radar
        .trigger(trigger_strobe), .counter(n_trigs),
        .prev_interval(trig_interval));
 
-   trigger_gen #(.do_smoothing(0), .width(1)) trigger_gen_ARP  // not really a trigger; we're just counting these pulses
+   trigger_gen #(.do_smoothing(0)) trigger_gen_ARP  // not really a trigger; we're just counting these pulses
      ( .clock(clk64), .reset(rx_dsp_reset), .enable(enable_rx),
        .signal(ARP_signal), .thresh_excite(ARP_thresh_excite),
        .thresh_relax(ARP_thresh_relax), .delay(0), .latency(ARP_latency),
@@ -244,7 +303,7 @@ module usrp_marine_radar
        .age(ticks_since_last_ARP),
        .prev_interval(ARP_interval));
 
-   trigger_gen #(.do_smoothing(0), .width(1)) trigger_gen_ACP  // not really a trigger; we're just counting these pulses
+   trigger_gen #(.do_smoothing(0)) trigger_gen_ACP  // not really a trigger; we're just counting these pulses
      ( .clock(clk64), .reset(rx_dsp_reset), .enable(enable_rx),
        .signal(ACP_signal), .thresh_excite(ACP_thresh_excite),
        .thresh_relax(ACP_thresh_relax), .delay(0), .latency(ACP_latency),
@@ -271,12 +330,12 @@ module usrp_marine_radar
 		  {4'b0, {  // mode 5: interleave raw all, changing every decimated clock
 			    (  ticks_in_pulse == 2'd0) ? VID_signal
 			    : (ticks_in_pulse == 2'd1) ? TRG_signal
-			    : (ticks_in_pulse == 2'd2) ? {11'b0, ARP_signal}
-			    :                            {11'b0, ACP_signal}
+			    : (ticks_in_pulse == 2'd2) ? ARP_signal
+			    :                            ACP_signal
 			    }
 		   },
-		  {15'b0, ACP_signal}, // mode 4: raw ACP
-		  {15'b0, ARP_signal}, // mode 3: raw ARP
+		  {4'b0, ACP_signal}, // mode 4: raw ACP
+		  {4'b0, ARP_signal}, // mode 3: raw ARP
 		  {4'b0, TRG_signal}, // mode 2: raw trigger
 		  {4'b0, VID_signal}, // mode 1: raw video
 		  {4'b0, vid_negate ? 12'h0fff - VID_signal : VID_signal}  // mode 0: pulse-sync'd video, possibly negated
@@ -373,6 +432,7 @@ module usrp_marine_radar
        .ACP_latency(ACP_latency),
        .n_samples(n_samples),
        .marine_radar_mode(marine_radar_mode),
+       .signal_sources(signal_sources),
        .new_mode(new_mode)
        );
       
