@@ -53,6 +53,9 @@
 // mode (normal or one of the raw sampling modes)
 `define FR_MARINE_RADAR_MODE      7'd78	// 3 bits
 
+// source for 4 radar signals
+`define FR_SIGNAL_SOURCES         7'd79       // 32 bits 
+
 // Registers 64 to 95 are reserved for user custom FPGA builds.
 // The standard USRP software will not touch these.
 
