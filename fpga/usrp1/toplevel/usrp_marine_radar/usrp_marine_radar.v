@@ -43,8 +43,7 @@ module usrp_marine_radar
  
  input wire [11:0] rx_a_a, // video 
  input wire [11:0] rx_b_a, // trigger
- input wire [11:0] rx_a_b, // heading (with dual LFRX configuration)
- input wire [11:0] rx_b_b, // azimuth (when using 4
+
   // USB interface
  input 		   usbclk,
  input wire [2:0]  usbctl,
@@ -85,16 +84,19 @@ module usrp_marine_radar
    wire [11:0] trig_thresh_relax;
    wire ACP_thresh_excite;
    wire ACP_thresh_relax;
-   wire [15:0] ACP_latency;
+   wire [31:0] ACP_latency;
    wire ARP_thresh_excite;
    wire ARP_thresh_relax;
-   wire [15:0] ARP_latency;
+   wire [31:0] ARP_latency;
    wire [15:0] trig_delay;
-   wire [15:0] trig_latency;
+   wire [31:0] trig_latency;
    wire [15:0] n_samples;
    wire [2:0]  marine_radar_mode; // mode: 0 = normal; 1 = raw video signal; 2 = raw trigger signal; 3 = raw ARP signal; 4 = raw ACP signal;
    // 5 = interleave all raw
 
+   wire [15:0] n_ACPs_per_sweep;
+   wire        use_ACP_for_sweeps;
+   
    // strobes asserted for one clk64 tick when each signal is detected:
    wire       trigger_strobe;
    wire       ARP_strobe;
@@ -130,6 +132,11 @@ module usrp_marine_radar
    wire [31:0] 	 trig_interval;			// number of clock ticks between most recent consecutive trigger pulses
    wire [31:0] 	 ACP_interval;			// number of clock ticks between most recent consecutive ACP pulses
    wire [31:0] 	 ARP_interval;			// number of clock ticks between most recent consecutive ARP pulses
+
+   reg [15:0] 	 n_ACPs_this_sweep;             // number of ACP since start of most recent sweep (only valid when use_ACP_for_sweeps is true)
+   reg [63:0] 	 ticks_at_sweep_start;          // value of clock_ticks at start of most recent sweep (only valid when use_ACP_for_sweeps is true)
+   reg [31:0] 	 ticks_this_sweep;		// number of clock ticks since start of most recent sweep (only valid when use_ACP_for_sweeps is true)
+   reg           got_first_ACP;                 // have we seen an ACP since starting to digitize? (only valid when use_ACP_for_sweeps is true)
    
    wire        serial_strobe;
    wire [6:0]  serial_addr;
@@ -173,6 +180,7 @@ module usrp_marine_radar
 
 	  ARP_strobe_since_last_ACP <= #1 1'b0;
 	  got_trig_since_last_ACP <= #1 1'b0;
+	  got_first_ACP <= #1 1'b0;
        end
      else
        begin
@@ -217,17 +225,41 @@ module usrp_marine_radar
 	       ARP_strobe_since_last_ACP <= #1 1'b1;
 	    end
 	  if (ACP_strobe)
-	    if (got_trig_since_last_ACP)
-	      begin
-		 last_ACP_interval_with_trig <= #1 ACP_interval;
-		 got_trig_since_last_ACP <= #1 1'b0;
-	      end
-	    if (ARP_strobe_since_last_ACP)
-	      begin
-		 last_ACP_interval_with_ARP <= #1 ACP_interval;
-		 ARP_strobe_since_last_ACP <= #1 1'b0;
-	      end
-       end
+	    begin
+	       if (got_trig_since_last_ACP)
+		 begin
+		    last_ACP_interval_with_trig <= #1 ACP_interval;
+		    got_trig_since_last_ACP <= #1 1'b0;
+		 end
+	       if (ARP_strobe_since_last_ACP)
+		 begin
+		    last_ACP_interval_with_ARP <= #1 ACP_interval;
+		    ARP_strobe_since_last_ACP <= #1 1'b0;
+		 end
+	       if (use_ACP_for_sweeps)
+		 begin
+		    if (! got_first_ACP)
+		      begin
+			 // we haven't started the first sweep yet, so
+			 // call the leading edge of this ACP pulse the start of the sweep
+			 n_ACPs_this_sweep <= #1 16'd0;
+			 ticks_at_sweep_start <= #1 clock_ticks;
+			 got_first_ACP <= #1 1'b1;
+		      end
+		    else
+		      begin
+			 n_ACPs_this_sweep = 1'b1 + n_ACPs_this_sweep;   // NB: blocking assign
+			 if (n_ACPs_this_sweep == n_ACPs_per_sweep)
+			   begin
+			      ticks_at_sweep_start <= #1 clock_ticks;
+			      n_ACPs_this_sweep <= #1 16'd0;
+			   end
+		      end // else: !if(! |ticks_at_sweep_start)
+		 end // if (use_ACP_for_sweeps)
+	    end // if (ACP_strobe)
+	  if (use_ACP_for_sweeps)
+	    ticks_this_sweep[31:0] <= #1 clock_ticks - ticks_at_sweep_start;
+       end // else: !if(rx_dsp_reset)
    
    trigger_gen trigger_gen
      ( .clock(clk64), .reset(rx_dsp_reset), .enable(enable_rx),
@@ -314,7 +346,7 @@ module usrp_marine_radar
 		   trig_interval[31:0],
 		   ARP_interval[31:0],
 		   last_ACP_interval_with_trig[31:0],
-		   ticks_since_last_ARP[31:0],
+		   use_ACP_for_sweeps ? ticks_this_sweep[31:0] : ticks_since_last_ARP[31:0],
 		   ticks_since_last_ACP[31:0],
 		   ACP_count_last_ARP[31:0],
 		   ACP_age_last_ARP[31:0],
@@ -373,7 +405,9 @@ module usrp_marine_radar
        .ACP_latency(ACP_latency),
        .n_samples(n_samples),
        .marine_radar_mode(marine_radar_mode),
-       .new_mode(new_mode)
+       .new_mode(new_mode),
+       .n_ACPs_per_sweep(n_ACPs_per_sweep),
+       .use_ACP_for_sweeps(use_ACP_for_sweeps)
        );
       
    io_pins io_pins

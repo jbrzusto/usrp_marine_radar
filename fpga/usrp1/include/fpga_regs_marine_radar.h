@@ -72,11 +72,15 @@
 // mode (normal or one of the raw sampling modes)
 #define FR_MARINE_RADAR_MODE   78	// 3 bits
 
+// number of ACP pulses per sweep
+#define FR_NUM_ACPS_PER_SWEEP  79      // 16 bits unsigned
+
+// use ACP pulses to delimit sweeps? (rather than using ARP pulse)
+#define FR_USE_ACP_FOR_SWEEPS  80      // 1 bit
+
 // Registers 64 to 95 are reserved for user custom FPGA builds.
 // The standard USRP software will not touch these.
 
-#define FR_USER_15	79
-#define FR_USER_16	80
 #define FR_USER_17	81
 #define FR_USER_18	82
 #define FR_USER_19	83

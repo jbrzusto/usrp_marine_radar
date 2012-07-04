@@ -37,17 +37,19 @@ module master_control_marine_radar
     output wire       vid_negate,
     output wire [11:0] trig_thresh_excite,
     output wire [11:0] trig_thresh_relax,
-    output wire [15:0] trig_latency,
+    output wire [31:0] trig_latency,
     output wire [15:0] trig_delay,
     output wire ARP_thresh_excite,
     output wire ARP_thresh_relax,
-    output wire [15:0] ARP_latency,
+    output wire [31:0] ARP_latency,
     output wire ACP_thresh_excite,
     output wire ACP_thresh_relax,
-    output wire [15:0] ACP_latency,
+    output wire [31:0] ACP_latency,
     output wire [15:0] n_samples,
     output wire [2:0] marine_radar_mode,
-    output wire new_mode
+    output wire new_mode,
+    output wire [15:0] n_ACPs_per_sweep,
+    output wire use_ACP_for_sweeps
     );
    
    // FIXME need a separate reset for all control settings 
@@ -102,6 +104,12 @@ module master_control_marine_radar
       
    // marine_radar mode
    setting_reg #(`FR_MARINE_RADAR_MODE) sr_marine_radar_mode(.clock(master_clk),.reset(rx_dsp_reset),.strobe(serial_strobe),.addr(serial_addr),.in(serial_data),.out(marine_radar_mode),.changed(new_mode));
+
+   // number of ACPs per sweep
+   setting_reg #(`FR_NUM_ACPS_PER_SWEEP) sr_num_acps_per_sweep(.clock(master_clk),.reset(rx_dsp_reset),.strobe(serial_strobe),.addr(serial_addr),.in(serial_data),.out(n_ACPs_per_sweep));
+
+      // use ACP to delimit sweeps?
+   setting_reg #(`FR_USE_ACP_FOR_SWEEPS) sr_use_acp_for_sweeps(.clock(master_clk),.reset(rx_dsp_reset),.strobe(serial_strobe),.addr(serial_addr),.in(serial_data),.out(use_ACP_for_sweeps));
       
    // Reset syncs for bus (usbclk) side
    // The RX bus side reset isn't used, the TX bus side one may not be needed
