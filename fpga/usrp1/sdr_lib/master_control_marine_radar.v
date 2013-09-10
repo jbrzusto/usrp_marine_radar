@@ -104,7 +104,7 @@ module master_control_marine_radar
    // marine_radar mode
    setting_reg #(`FR_MARINE_RADAR_MODE) sr_marine_radar_mode(.clock(master_clk),.reset(rx_dsp_reset),.strobe(serial_strobe),.addr(serial_addr),.in(serial_data),.out(marine_radar_mode),.changed(new_mode));
 
-   // Number of samples (per pulse)
+   // signal sources multiplex register
    setting_reg #(`FR_SIGNAL_SOURCES) sr_signal_sources(.clock(master_clk),.reset(rx_dsp_reset),.strobe(serial_strobe),.addr(serial_addr),.in(serial_data),.out(signal_sources));
       
       
