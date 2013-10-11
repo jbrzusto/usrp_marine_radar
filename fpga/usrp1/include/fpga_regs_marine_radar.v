@@ -45,23 +45,26 @@
 `define FR_ARP_THRESH_RELAX       7'd75	// [0,4095]
 
 // ARP latency
-`define FR_ARP_LATENCY            7'd76     // 32 bits unsigned
+`define FR_ARP_LATENCY            7'd76 // 32 bits unsigned
 
 // number of samples
-`define FR_N_SAMPLES              7'd77      // 32 bits unsigned
+`define FR_N_SAMPLES              7'd77 // 32 bits unsigned
 
 // mode (normal or one of the raw sampling modes)
-`define FR_MARINE_RADAR_MODE      7'd78	// 3 bits
+`define FR_MARINE_RADAR_MODE      7'd78 // 3 bits
 
 // source for 4 radar signals
-`define FR_SIGNAL_SOURCES         7'd79       // 32 bits 
+`define FR_SIGNAL_SOURCES         7'd79 // 32 bits 
+
+// number of ACP pulses per sweep
+`define FR_NUM_ACPS_PER_SWEEP     7'd80 // 16 bits unsigned
+
+// use ACP pulses to delimit sweeps? (rather than using ARP pulse)
+`define FR_USE_ACP_FOR_SWEEPS     7'd81 // 1 bit
 
 // Registers 64 to 95 are reserved for user custom FPGA builds.
 // The standard USRP software will not touch these.
 
-`define FR_USER_15                7'd79
-`define FR_USER_16                7'd80
-`define FR_USER_17                7'd81
 `define FR_USER_18                7'd82
 `define FR_USER_19                7'd83
 `define FR_USER_20                7'd84

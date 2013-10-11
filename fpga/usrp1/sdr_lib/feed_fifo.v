@@ -40,14 +40,14 @@ module feed_fifo
     input rxstrobe,
     input wire init,
     input wire [15:0] data,
-    input wire [15:0] num_data,
+    input wire [31:0] num_data,
     output reg rx_overrun,
     output reg fifo_hungry // need more samples? controls upstream pipeline
     );
       
    wire [11:0] 	  rxfifolevel;
    wire 	  rx_full;
-   reg [15:0] 	  count_data;
+   reg [31:0] 	  count_data;
    
    // USB Read Side of FIFO
    always @(negedge usbclk)
