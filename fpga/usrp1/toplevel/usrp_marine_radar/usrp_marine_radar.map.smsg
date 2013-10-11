@@ -1,4 +1,0 @@
-Warning (10268): Verilog HDL information at feed_fifo.v(138): always construct contains both blocking and non-blocking assignments
-Warning (10268): Verilog HDL information at interleave.v(44): always construct contains both blocking and non-blocking assignments
-Warning (10268): Verilog HDL information at pack_metadata.v(59): always construct contains both blocking and non-blocking assignments
-Warning (10268): Verilog HDL information at trigger_gen.v(89): always construct contains both blocking and non-blocking assignments
