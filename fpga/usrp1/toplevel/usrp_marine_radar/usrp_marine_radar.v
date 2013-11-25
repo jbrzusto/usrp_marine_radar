@@ -173,49 +173,53 @@ module usrp_marine_radar
 
    wire counter = settings[1];
 
-   wire [11:0] VID_signal = 
-	       (VID_source == `SIGNAL_SOURCE_RX_A_A) ? rx_a_a[11:0] :
-	       (VID_source == `SIGNAL_SOURCE_RX_B_A) ? rx_b_a[11:0] :
-	       (VID_source == `SIGNAL_SOURCE_RX_A_B) ? rx_a_b[11:0] :
-	       (VID_source == `SIGNAL_SOURCE_RX_B_B) ? rx_b_b[11:0] :
-	       (VID_source == `SIGNAL_SOURCE_IO_RX_A_0) ? {io_rx_a[0], 11'b0}:
-	       (VID_source == `SIGNAL_SOURCE_IO_RX_A_1) ? {io_rx_a[1], 11'b0}:
-	       (VID_source == `SIGNAL_SOURCE_IO_RX_B_0) ? {io_rx_b[0], 11'b0}:
-	       (VID_source == `SIGNAL_SOURCE_IO_RX_B_1) ? {io_rx_b[1], 11'b0}:
-	       {12'b0};
+   wire [11:0] VID_signal = rx_a_a[11:0];
+   
+	       // (VID_source == `SIGNAL_SOURCE_RX_A_A) ? rx_a_a[11:0] :
+	       // (VID_source == `SIGNAL_SOURCE_RX_B_A) ? rx_b_a[11:0] :
+	       // (VID_source == `SIGNAL_SOURCE_RX_A_B) ? rx_a_b[11:0] :
+	       // (VID_source == `SIGNAL_SOURCE_RX_B_B) ? rx_b_b[11:0] :
+	       // (VID_source == `SIGNAL_SOURCE_IO_RX_A_0) ? {io_rx_a[0], 11'b0}:
+	       // (VID_source == `SIGNAL_SOURCE_IO_RX_A_1) ? {io_rx_a[1], 11'b0}:
+	       // (VID_source == `SIGNAL_SOURCE_IO_RX_B_0) ? {io_rx_b[0], 11'b0}:
+	       // (VID_source == `SIGNAL_SOURCE_IO_RX_B_1) ? {io_rx_b[1], 11'b0}:
+	       // {12'b0};
 
-   wire [11:0] TRG_signal = 
-	       (TRG_source == `SIGNAL_SOURCE_RX_A_A) ? rx_a_a[11:0] :
-	       (TRG_source == `SIGNAL_SOURCE_RX_B_A) ? rx_b_a[11:0] :
-	       (TRG_source == `SIGNAL_SOURCE_RX_A_B) ? rx_a_b[11:0] :
-	       (TRG_source == `SIGNAL_SOURCE_RX_B_B) ? rx_b_b[11:0] :
-	       (TRG_source == `SIGNAL_SOURCE_IO_RX_A_0) ? {io_rx_a[0], 11'b0}:
-	       (TRG_source == `SIGNAL_SOURCE_IO_RX_A_1) ? {io_rx_a[1], 11'b0}:
-	       (TRG_source == `SIGNAL_SOURCE_IO_RX_B_0) ? {io_rx_b[0], 11'b0}:
-	       (TRG_source == `SIGNAL_SOURCE_IO_RX_B_1) ? {io_rx_b[1], 11'b0}:
-	       {12'b0};
+   wire [11:0] TRG_signal = rx_b_a[11:0];
+   
+	       // (TRG_source == `SIGNAL_SOURCE_RX_A_A) ? rx_a_a[11:0] :
+	       // (TRG_source == `SIGNAL_SOURCE_RX_B_A) ? rx_b_a[11:0] :
+	       // (TRG_source == `SIGNAL_SOURCE_RX_A_B) ? rx_a_b[11:0] :
+	       // (TRG_source == `SIGNAL_SOURCE_RX_B_B) ? rx_b_b[11:0] :
+	       // (TRG_source == `SIGNAL_SOURCE_IO_RX_A_0) ? {io_rx_a[0], 11'b0}:
+	       // (TRG_source == `SIGNAL_SOURCE_IO_RX_A_1) ? {io_rx_a[1], 11'b0}:
+	       // (TRG_source == `SIGNAL_SOURCE_IO_RX_B_0) ? {io_rx_b[0], 11'b0}:
+	       // (TRG_source == `SIGNAL_SOURCE_IO_RX_B_1) ? {io_rx_b[1], 11'b0}:
+	       // {12'b0};
 
-   wire [11:0] ARP_signal = 
-	       (ARP_source == `SIGNAL_SOURCE_RX_A_A) ? rx_a_a[11:0] :
-	       (ARP_source == `SIGNAL_SOURCE_RX_B_A) ? rx_b_a[11:0] :
-	       (ARP_source == `SIGNAL_SOURCE_RX_A_B) ? rx_a_b[11:0] :
-	       (ARP_source == `SIGNAL_SOURCE_RX_B_B) ? rx_b_b[11:0] :
-	       (ARP_source == `SIGNAL_SOURCE_IO_RX_A_0) ? {io_rx_a[0], 11'b0}:
-	       (ARP_source == `SIGNAL_SOURCE_IO_RX_A_1) ? {io_rx_a[1], 11'b0}:
-	       (ARP_source == `SIGNAL_SOURCE_IO_RX_B_0) ? {io_rx_b[0], 11'b0}:
-	       (ARP_source == `SIGNAL_SOURCE_IO_RX_B_1) ? {io_rx_b[1], 11'b0}:
-	       {12'b0};
+   wire [11:0] ARP_signal = rx_a_b[11:0];
+   
+	       // (ARP_source == `SIGNAL_SOURCE_RX_A_A) ? rx_a_a[11:0] :
+	       // (ARP_source == `SIGNAL_SOURCE_RX_B_A) ? rx_b_a[11:0] :
+	       // (ARP_source == `SIGNAL_SOURCE_RX_A_B) ? rx_a_b[11:0] :
+	       // (ARP_source == `SIGNAL_SOURCE_RX_B_B) ? rx_b_b[11:0] :
+	       // (ARP_source == `SIGNAL_SOURCE_IO_RX_A_0) ? {io_rx_a[0], 11'b0}:
+	       // (ARP_source == `SIGNAL_SOURCE_IO_RX_A_1) ? {io_rx_a[1], 11'b0}:
+	       // (ARP_source == `SIGNAL_SOURCE_IO_RX_B_0) ? {io_rx_b[0], 11'b0}:
+	       // (ARP_source == `SIGNAL_SOURCE_IO_RX_B_1) ? {io_rx_b[1], 11'b0}:
+	       // {12'b0};
 
-   wire [11:0] ACP_signal = 
-	       (ACP_source == `SIGNAL_SOURCE_RX_A_A) ? rx_a_a[11:0] :
-	       (ACP_source == `SIGNAL_SOURCE_RX_B_A) ? rx_b_a[11:0] :
-	       (ACP_source == `SIGNAL_SOURCE_RX_A_B) ? rx_a_b[11:0] :
-	       (ACP_source == `SIGNAL_SOURCE_RX_B_B) ? rx_b_b[11:0] :
-	       (ACP_source == `SIGNAL_SOURCE_IO_RX_A_0) ? {io_rx_a[0], 11'b0}:
-	       (ACP_source == `SIGNAL_SOURCE_IO_RX_A_1) ? {io_rx_a[1], 11'b0}:
-	       (ACP_source == `SIGNAL_SOURCE_IO_RX_B_0) ? {io_rx_b[0], 11'b0}:
-	       (ACP_source == `SIGNAL_SOURCE_IO_RX_B_1) ? {io_rx_b[1], 11'b0}:
-	       {12'b0};
+   wire [11:0] ACP_signal = rx_b_b[11:0];
+   
+	       // (ACP_source == `SIGNAL_SOURCE_RX_A_A) ? rx_a_a[11:0] :
+	       // (ACP_source == `SIGNAL_SOURCE_RX_B_A) ? rx_b_a[11:0] :
+	       // (ACP_source == `SIGNAL_SOURCE_RX_A_B) ? rx_a_b[11:0] :
+	       // (ACP_source == `SIGNAL_SOURCE_RX_B_B) ? rx_b_b[11:0] :
+	       // (ACP_source == `SIGNAL_SOURCE_IO_RX_A_0) ? {io_rx_a[0], 11'b0}:
+	       // (ACP_source == `SIGNAL_SOURCE_IO_RX_A_1) ? {io_rx_a[1], 11'b0}:
+	       // (ACP_source == `SIGNAL_SOURCE_IO_RX_B_0) ? {io_rx_b[0], 11'b0}:
+	       // (ACP_source == `SIGNAL_SOURCE_IO_RX_B_1) ? {io_rx_b[1], 11'b0}:
+	       // {12'b0};
    
    // output of stage i of pipeline is sample_i, which is ready when strobe_i goes high
    
