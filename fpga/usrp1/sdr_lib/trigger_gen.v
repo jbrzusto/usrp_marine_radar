@@ -36,6 +36,9 @@
 // at the start of the clock pulse N+1+delay.
 //
 // The trigger is only held high for one clock.
+//
+// The output 'quiescent' is asserted upon crossing of the relaxation threshold until
+// the next crossing of the excitation threshold, independent of latency.
 
 // mode M1:  thresh_relax < thresh_excite (usual situation)
 
@@ -56,17 +59,18 @@
 
 module trigger_gen 
   ( input clock,
-    input reset,
-    input enable,
-    input [width-1:0] signal,
-    input [width-1:0] thresh_relax,
-    input [width-1:0] thresh_excite,
-    input [delay_width-1:0] delay,
-    input [age_width-1:0] latency,
-    input 		    always_trigger,
-    output reg 		    trigger,
+    input                          reset,
+    input                          enable,
+    input [width-1:0]              signal,
+    input [width-1:0]              thresh_relax,
+    input [width-1:0]              thresh_excite,
+    input [delay_width-1:0]        delay,
+    input [age_width-1:0]          latency,
+    input                          always_trigger,
+    output reg                     trigger,
+    output reg                     quiescent,  // held high between entry to latency period and return to excitation level (even if latent)
     output reg [counter_width-1:0] counter,
-    output reg [age_width-1:0] 	   age, // number of clock ticks since reset or assertion of trigger
+    output reg [age_width-1:0]     age, // number of clock ticks since reset or assertion of trigger
     output reg [age_width-1:0]     prev_interval // number of clock ticks between most recent consecutive triggers; undefined until 2nd trigger pulse has been detected.
     );
    
@@ -101,11 +105,12 @@ module trigger_gen
 	  age <= #1 1'b0;
 	  relax_age <= #1 1'b0;
 	  prev_interval <= #1 1'b0;
+          quiescent <= #1 1'b0;
        end
      else
        begin	  
 	  age = age + 1'b1;              // NB: blocking assign
-	  relax_age =  relax_age + 1'b1; // NB: blocking assign 
+	  relax_age = relax_age + 1'b1; // NB: blocking assign 
 	  
 	  sig_smoothed <= #1 do_smoothing ? smoother[3 + width - 1 : 3] : signal;
 	  
@@ -113,94 +118,110 @@ module trigger_gen
 	    `TS_M1_WAITING_RELAX:
 	      begin
 		 trigger <= #1 1'b0;
-		 if (age >= latency && sig_smoothed <= thresh_relax)
+		 if (sig_smoothed <= thresh_relax)
 		   begin
 		      state <= #1 `TS_M1_WAITING_EXCITE;
 		      relax_age <= #1 1'b0;
+                      quiescent <= #1 1'b1;
 		   end
 	      end
 	    
 	    `TS_M1_WAITING_EXCITE:
 	      begin
-		 if (relax_age >= latency && sig_smoothed >= thresh_excite)
-		   begin
-		      prev_interval <= #1 age;
-		      age <= #1 1'b0;
-		      counter <= #1 counter + 1'b1;
-		      if (delay == 0)
-			begin
-			   state <= #1 `TS_M1_WAITING_RELAX;
-			   trigger <= #1 1'b1;
-			end
-		      else
-			begin
-			   state <= #1 `TS_DELAYING;
-			   delay_counter <= #1 delay;
-			   trigger <= #1 1'b0; // redundant
-			end
-		   end
+                 if (sig_smoothed >= thresh_excite)
+                   begin
+                      quiescent <= #1 1'b0;
+		      if (relax_age >= latency)
+		        begin
+		           prev_interval <= #1 age;
+		           age <= #1 1'b0;
+		           counter <= #1 counter + 1'b1;
+		           if (delay == 0)
+			     begin
+			        state <= #1 `TS_M1_WAITING_RELAX;
+			        trigger <= #1 1'b1;
+			     end
+		           else
+			     begin
+			        state <= #1 `TS_DELAYING;
+			        delay_counter <= #1 delay;
+			        trigger <= #1 1'b0; // redundant
+			     end
+		        end // if (relax_age >= latency)
+                   end
 	      end
 	    
 	    `TS_M2_WAITING_RELAX:
 	      begin
 		 trigger <= #1 1'b0;
-		 if (age >= latency && sig_smoothed >= thresh_relax)
+		 if (sig_smoothed >= thresh_relax)
 		   begin
 		      state <= #1 `TS_M2_WAITING_EXCITE;
 		      relax_age <= #1 1'b0;
+                      quiescent <= #1 1'b1;
 		   end
 	      end
 	    
 	    `TS_M2_WAITING_EXCITE:
 	      begin
-		 if (relax_age >= latency && sig_smoothed <= thresh_excite)
-		   begin
-		      prev_interval <= #1 age;
-		      age <= #1 1'b0;
-		      counter <= #1 counter + 1'b1;
-		      if (delay == 0)
-			begin
-			   state <= #1 `TS_M2_WAITING_RELAX;
-			   trigger <= #1 1'b1;
-			end
-		      else
-			begin
-			   state <= #1 `TS_DELAYING;
-			   delay_counter <= #1 delay;
-			   trigger <= #1 1'b0; // redundant
-			end
-		   end
+                 if (sig_smoothed <= thresh_excite)
+                   begin
+                      quiescent <= #1 1'b0;
+                      
+		      if (relax_age >= latency)
+		        begin
+		           prev_interval <= #1 age;
+		           age <= #1 1'b0;
+		           counter <= #1 counter + 1'b1;
+		           if (delay == 0)
+			     begin
+			        state <= #1 `TS_M2_WAITING_RELAX;
+			        trigger <= #1 1'b1;
+			     end
+		           else
+			     begin
+			        state <= #1 `TS_DELAYING;
+			        delay_counter <= #1 delay;
+			        trigger <= #1 1'b0; // redundant
+			     end
+		        end // if (relax_age >= latency)
+                   end
 	      end
 	    
 	    `TS_M3_WAITING_RELAX:
 	      begin
 		 trigger <= #1 1'b0;
-		 if (age >= latency && sig_smoothed < thresh_relax)
+		 if (sig_smoothed < thresh_relax)
 		   begin
 		      state <= #1 `TS_M3_WAITING_EXCITE;
 		      relax_age <= #1 1'b0;
+                      quiescent <= #1 1'b1;
 		   end
 	      end
 	    
 	    `TS_M3_WAITING_EXCITE:
 	      begin
-		 if (relax_age >= latency && sig_smoothed > thresh_excite)
-		   begin
-		      prev_interval <= #1 age;
-		      age <= #1 1'b0;
-		      counter <= #1 counter + 1'b1;
-		      if (delay == 0)
-			begin
-			   state <= #1 `TS_M3_WAITING_RELAX;
-			   trigger <= #1 1'b1;
-			end
-		      else
-			begin
-			   state <= #1 `TS_DELAYING;
-			   delay_counter <= #1 delay;
-			   trigger <= #1 1'b0; // redundant
-			end
-		   end
+                 if (sig_smoothed > thresh_excite)
+                   begin
+                      quiescent <= #1 1'b0;
+		      if (relax_age >= latency)
+		        begin
+		           prev_interval <= #1 age;
+		           age <= #1 1'b0;
+		           counter <= #1 counter + 1'b1;
+		           if (delay == 0)
+			     begin
+			        state <= #1 `TS_M3_WAITING_RELAX;
+			        trigger <= #1 1'b1;
+			     end
+		           else
+			     begin
+			        state <= #1 `TS_DELAYING;
+			        delay_counter <= #1 delay;
+			        trigger <= #1 1'b0; // redundant
+			     end
+		        end // if (relax_age >= latency)
+                   end
 	      end
 	    
 	    `TS_DELAYING:

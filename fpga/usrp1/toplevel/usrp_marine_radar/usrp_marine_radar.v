@@ -325,7 +325,7 @@ module usrp_marine_radar
 	    ticks_this_sweep[31:0] <= #1 clock_ticks[31:0] - ticks_at_sweep_start[31:0];
        end // else: !if(rx_dsp_reset)
    
-   trigger_gen trigger_gen
+   trigger_gen #(.do_smoothing(0)) trigger_gen
      ( .clock(clk64), .reset(rx_dsp_reset), .enable(enable_rx),
        .signal(rx_b_a), .thresh_excite(trig_thresh_excite),
        .thresh_relax(trig_thresh_relax), .delay(trig_delay), .latency(trig_latency),
