@@ -332,7 +332,7 @@ module usrp_marine_radar
        .trigger(trigger_strobe), .counter(n_trigs),
        .prev_interval(trig_interval));
 
-   trigger_gen #(.do_smoothing(0)) trigger_gen_ARP  // not really a trigger; we're just counting these pulses
+   trigger_gen #(.do_smoothing(1)) trigger_gen_ARP  // not really a trigger; we're just counting these pulses
      ( .clock(clk64), .reset(rx_dsp_reset), .enable(enable_rx),
        .signal(ARP_signal), .thresh_excite(ARP_thresh_excite),
        .thresh_relax(ARP_thresh_relax), .delay(0), .latency(ARP_latency),
@@ -340,7 +340,7 @@ module usrp_marine_radar
        .age(ticks_since_last_ARP),
        .prev_interval(ARP_interval));
 
-   trigger_gen #(.do_smoothing(0)) trigger_gen_ACP  // not really a trigger; we're just counting these pulses
+   trigger_gen #(.do_smoothing(1)) trigger_gen_ACP  // not really a trigger; we're just counting these pulses
      ( .clock(clk64), .reset(rx_dsp_reset), .enable(enable_rx),
        .signal(ACP_signal), .thresh_excite(ACP_thresh_excite),
        .thresh_relax(ACP_thresh_relax), .delay(0), .latency(ACP_latency),
