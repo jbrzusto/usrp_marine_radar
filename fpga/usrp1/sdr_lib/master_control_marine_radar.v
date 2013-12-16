@@ -50,7 +50,9 @@ module master_control_marine_radar
     output wire new_mode,
     output wire [31:0] signal_sources,
     output wire [15:0] n_ACPs_per_sweep,
-    output wire use_ACP_for_sweeps
+    output wire use_ACP_for_sweeps,
+    output wire [15:0] FEB_DAC,
+    output wire set_FEB_DAC
     );
    
    // FIXME need a separate reset for all control settings 
@@ -114,6 +116,9 @@ module master_control_marine_radar
 
       // use ACP to delimit sweeps?
    setting_reg #(`FR_USE_ACP_FOR_SWEEPS) sr_use_acp_for_sweeps(.clock(master_clk),.reset(rx_dsp_reset),.strobe(serial_strobe),.addr(serial_addr),.in(serial_data),.out(use_ACP_for_sweeps));
+
+   // front-end board DAC setting
+   setting_reg #(`FR_FRONT_END_BOARD_DAC) sr_FEB_DAC(.clock(master_clk),.reset(rx_dsp_reset),.strobe(serial_strobe),.addr(serial_addr),.in(serial_data),.out(FEB_DAC),.changed(set_FEB_DAC));
       
    // Reset syncs for bus (usbclk) side
    // The RX bus side reset isn't used, the TX bus side one may not be needed

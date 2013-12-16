@@ -62,10 +62,12 @@
 // use ACP pulses to delimit sweeps? (rather than using ARP pulse)
 `define FR_USE_ACP_FOR_SWEEPS     7'd81 // 1 bit
 
-// Registers 64 to 95 are reserved for user custom FPGA builds.
+// register to hold value for SPI output to TI dac124s085 quad DAC
+`define FR_FRONT_END_BOARD_DAC    7'd82 // 16 bits
+
+// Registers 83 to 95 are reserved for user custom FPGA builds.
 // The standard USRP software will not touch these.
 
-`define FR_USER_18                7'd82
 `define FR_USER_19                7'd83
 `define FR_USER_20                7'd84
 `define FR_USER_21                7'd85

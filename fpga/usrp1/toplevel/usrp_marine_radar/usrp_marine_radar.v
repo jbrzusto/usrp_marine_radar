@@ -118,6 +118,18 @@ module usrp_marine_radar
 
    wire [15:0] n_ACPs_per_sweep;
    wire        use_ACP_for_sweeps;
+
+   // register and change trigger for SPI control of front-end-board DAC
+   
+   wire [15:0] FEB_DAC; // new value to output
+   wire        set_FEB_DAC; // 1-clock-wide trigger when new value ready to be written
+   wire        FEB_DAC_DIN = io_rx_a[12];   // data line to DAC chip
+   wire        FEB_DAC_SYNC = io_rx_a[13];  // chip select line to DAC chip (active low)
+   wire        FEB_DAC_SCLCK = io_rx_a[14]; // serial clock line to DAC chip
+   wire        FEB_DAC_DOUT = io_rx_a[15]; // only for testing; FEB is write-only
+   wire        FEB_value_in_ready; // asserted when FEB value has been read
+   wire [15:0] FEB_value_in; // FEB value read by SPI, valid when FEB_value_in_ready is asserted
+   reg [15:0]  latest_FEB_value_in; //  latest value read via SPI from FEB (arrives in pulse metadata)
    
    // strobes asserted for one clk64 tick when each signal is detected:
    wire       trigger_strobe;
@@ -251,6 +263,11 @@ module usrp_marine_radar
 	  if (new_mode)
 	    non_stop <= #1 | marine_radar_mode;
 
+          if (FEB_value_in_ready)
+            begin
+               latest_FEB_value_in <= #1 FEB_value_in;
+            end
+          
 	  clock_ticks <= #1 clock_ticks + 64'd1;
 
 	  if (enable_rx)
@@ -325,7 +342,7 @@ module usrp_marine_radar
 	    ticks_this_sweep[31:0] <= #1 clock_ticks[31:0] - ticks_at_sweep_start[31:0];
        end // else: !if(rx_dsp_reset)
    
-   trigger_gen trigger_gen
+   trigger_gen #(.do_smoothing(0)) trigger_gen
      ( .clock(clk64), .reset(rx_dsp_reset), .enable(enable_rx),
        .signal(rx_b_a), .thresh_excite(trig_thresh_excite),
        .thresh_relax(trig_thresh_relax), .delay(trig_delay), .latency(trig_latency),
@@ -348,6 +365,16 @@ module usrp_marine_radar
        .age(ticks_since_last_ACP),
        .prev_interval(ACP_interval));
 
+   spi spi_FEB_DAC // spi output to the front-end board dac
+     ( .clock(clk64), .reset(rx_dsp_reset),
+       .strobe_out (set_FEB_DAC),
+       .value_out (FEB_DAC),
+       .strobe_in (FEB_value_in_ready),
+       .value_in (FEB_value_in),
+       .MOSI(FEB_DAC_DIN),
+       .MISO(FEB_DAC_DOUT),
+       .SCLCK(FEB_DAC_SCLCK),
+       .SYNC(FEB_DAC_SYNC));  
 
    // decimate the clock
 
@@ -406,6 +433,7 @@ module usrp_marine_radar
        .data_in(sample_2),
        .strobe_in(strobe_2),
        .meta_data({
+                   latest_FEB_value_in[15:0],
 		   clock_ticks[63:0],
 		   trig_interval[31:0],
 		   ARP_interval[31:0],
@@ -472,7 +500,9 @@ module usrp_marine_radar
        .new_mode(new_mode),
        .signal_sources(signal_sources),
        .n_ACPs_per_sweep(n_ACPs_per_sweep),
-       .use_ACP_for_sweeps(use_ACP_for_sweeps)
+       .use_ACP_for_sweeps(use_ACP_for_sweeps),
+       .FEB_DAC(FEB_DAC),
+       .set_FEB_DAC(set_FEB_DAC)
        );
       
    io_pins io_pins
@@ -484,8 +514,7 @@ module usrp_marine_radar
    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    // Misc Settings
    setting_reg #(`FR_MODE) sr_misc(.clock(clk64),.reset(rx_dsp_reset),.strobe(serial_strobe),.addr(serial_addr),.in(serial_data),.out(settings));
-
-
+           
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    // AUX DIGITAL OUTPUTS
    // reg_1[0] : tilter control serial output line
