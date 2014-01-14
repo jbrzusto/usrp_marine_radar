@@ -19,73 +19,71 @@
 //  Foundation, Inc., 51 Franklin Street, Boston, MA  02110-1301  USA
 //
 
+// Clock decimation: pass every n'th (positive) clock pulse, 
+//
 // timing:
 //
-// if rate == 0
+// if rate == 0 (no decimation; clock_out is always true)
 //                   ________          ________          ________          ________          __
-// strobe_in:    ___/        \________/        \________/        \________/        \________/  
+// clock_in :    ___/        \________/        \________/        \________/        \________/  
 //                   __________________________________________________________________________
 // enable:       ___/                                                                   
 //                                    _________________________________________________________
-// strobe_out:   ____________________/                                                                   
+// clock_out:    ____________________/         
 
 
 // if rate == 1  
 //                   ________          ________          ________          ________          __
-// strobe_in:    ___/        \________/        \________/        \________/        \________/  
+// clock_in:     ___/        \________/        \________/        \________/        \________/  
 //                   __________________________________________________________________________
 // enable:       ___/                                                                   
-//                                    _________________                   _________________
-// strobe_out:   ____________________/                 \_________________/                 \___
+//                                    _________                           _________
+// clock_out:    ____________________/         \_________________________/         \___________
 //
 //
 // ... and so on.
 
-// i.e. there is a 1 clock delay between enable and the first assertion of strobe_out 
-// then a <rate> clock delay between subsequent assertions of strobe_out
+// i.e. there is a 1 clock delay between enable and the first assertion of clock_out 
+// then a <rate> clock delay between subsequent assertions of clock_out
 
 // the decimation rate is grabbed from <rate> when <init> is true.
 
 module decim
-  (clock,reset,enable,init,strobe_in,rate,strobe_out);
+  (reset,enable,init,rate,clock_in,clock_out);
 
-   parameter rate_width = 16;
+   parameter rate_width = 32;
    
-   input clock;
+   input clock_in;
    input reset;
    input enable;
    input init;
-   input strobe_in;
    input [rate_width-1:0] rate;
 
-   output reg 		       strobe_out;
+   output reg 		       clock_out;
       
    reg [rate_width-1:0]   count;
    reg [rate_width-1:0]   rate_cached;
    
-   always @(posedge clock)
+   always @(posedge clock_in)
      if(reset | ~enable | init)
        begin
 	  count <= #1 0;
-	  strobe_out <= #1 0;
+	  clock_out <= #1 0;
 	  if (init)
 	    rate_cached <= #1 rate;
        end
-     else if (strobe_in)
+     else
        begin
 	  if (count == 0)
 	    begin
 	       count <= #1 rate_cached;
-	       strobe_out <= #1 1;
+	       clock_out <= #1 1;
 	    end
 	  else
 	    begin
 	       count <= #1 count - 1'b1;
-	       strobe_out <= #1 0;
+	       clock_out <= #1 0;
 	    end
        end
-     else
-       strobe_out <= #1 0;
-   
 endmodule // decim
 

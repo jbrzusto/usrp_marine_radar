@@ -31,31 +31,30 @@
 
 module usrp_marine_radar
 (output MYSTERY_SIGNAL,
- input 		   master_clk,
- input 		   SCLK,
- input 		   SDI,
- inout 		   SDO,
- input 		   SEN_FPGA,
+ input             master_clk,
+ input             SCLK,
+ input             SDI,
+ inout             SDO,
+ input             SEN_FPGA,
 
- input 		   FX2_1,
- output 	   FX2_2,
- output 	   FX2_3,
+ input             FX2_1,
+ output            FX2_2,
+ output            FX2_3,
  
  input wire [11:0] rx_a_a, // video 
  input wire [11:0] rx_b_a, // trigger
  input wire [11:0] rx_a_b, // heading (with dual LFRX configuration)
  input wire [11:0] rx_b_b, // azimuth (with dual LFRX configuration)
   // USB interface
- input 		   usbclk,
+ input             usbclk,
  input wire [2:0]  usbctl,
  output wire [1:0] usbrdy,
- inout [15:0] 	   usbdata, // NB Careful, inout
+ inout [15:0]      usbdata, // NB Careful, inout
 
  // These are the general purpose i/o's that go to the daughterboard slots
  inout wire [15:0] io_rx_a,
  inout wire [15:0] io_rx_b
  );	
-   wire [15:0] debugdata,debugctrl;
    assign MYSTERY_SIGNAL = 1'b0;
    
    wire clk64;
@@ -95,42 +94,30 @@ module usrp_marine_radar
    wire [2:0]  marine_radar_mode; // mode: 0 = normal; 1 = raw video signal; 2 = raw trigger signal; 3 = raw ARP signal; 4 = raw ACP signal;
    // 5 = interleave all raw
 
-   // multiplex selection for signal sources:
-   wire [31:0] signal_sources;
-
-   // Components for each signal:
-
-   wire [7:0]  VID_source = signal_sources[31:24];
-   wire [7:0]  TRG_source = signal_sources[23:16];
-   wire [7:0]  ARP_source = signal_sources[15:8];
-   wire [7:0]  ACP_source = signal_sources[7:0];
-
-   // each component is a selector from this list:
-   
-`define SIGNAL_SOURCE_RX_A_A	8'd0
-`define SIGNAL_SOURCE_RX_B_A	8'd1
-`define SIGNAL_SOURCE_RX_A_B	8'd2
-`define SIGNAL_SOURCE_RX_B_B	8'd3
-`define SIGNAL_SOURCE_IO_RX_A_0 8'd4
-`define SIGNAL_SOURCE_IO_RX_A_1 8'd5
-`define SIGNAL_SOURCE_IO_RX_B_0 8'd6
-`define SIGNAL_SOURCE_IO_RX_B_1 8'd7
-
    wire [15:0] n_ACPs_per_sweep;
    wire        use_ACP_for_sweeps;
 
+   reg [15:0]  reg_1;
+   
+   assign io_rx_a[11:0] = reg_1[11:0];
+
    // register and change trigger for SPI control of front-end-board DAC
+
+   wire        FEB_DAC_DIN;
+   wire        FEB_DAC_SYNC;
+   wire        FEB_DAC_SCLCK;
+   wire        FEB_DAC_DOUT;
    
    wire [15:0] FEB_DAC; // new value to output
    wire        set_FEB_DAC; // 1-clock-wide trigger when new value ready to be written
-   wire        FEB_DAC_DIN = io_rx_a[12];   // data line to DAC chip
-   wire        FEB_DAC_SYNC = io_rx_a[13];  // chip select line to DAC chip (active low)
-   wire        FEB_DAC_SCLCK = io_rx_a[14]; // serial clock line to DAC chip
-   wire        FEB_DAC_DOUT = io_rx_a[15]; // only for testing; FEB is write-only
+   assign      io_rx_a[13] = FEB_DAC_DIN;   // data line to DAC chip
+   assign      io_rx_a[14] = FEB_DAC_SYNC;  // chip select line to DAC chip (active low)
+   assign      io_rx_a[15] = FEB_DAC_SCLCK; // serial clock line to DAC chip
+   assign      FEB_DAC_DOUT = io_rx_a[12]; // only for testing; FEB is write-only
    wire        FEB_value_in_ready; // asserted when FEB value has been read
    wire [15:0] FEB_value_in; // FEB value read by SPI, valid when FEB_value_in_ready is asserted
    reg [15:0]  latest_FEB_value_in; //  latest value read via SPI from FEB (arrives in pulse metadata)
-   
+      
    // strobes asserted for one clk64 tick when each signal is detected:
    wire       trigger_strobe;
    wire       ARP_strobe;
@@ -186,52 +173,9 @@ module usrp_marine_radar
    wire counter = settings[1];
 
    wire [11:0] VID_signal = rx_a_a[11:0];
-   
-	       // (VID_source == `SIGNAL_SOURCE_RX_A_A) ? rx_a_a[11:0] :
-	       // (VID_source == `SIGNAL_SOURCE_RX_B_A) ? rx_b_a[11:0] :
-	       // (VID_source == `SIGNAL_SOURCE_RX_A_B) ? rx_a_b[11:0] :
-	       // (VID_source == `SIGNAL_SOURCE_RX_B_B) ? rx_b_b[11:0] :
-	       // (VID_source == `SIGNAL_SOURCE_IO_RX_A_0) ? {io_rx_a[0], 11'b0}:
-	       // (VID_source == `SIGNAL_SOURCE_IO_RX_A_1) ? {io_rx_a[1], 11'b0}:
-	       // (VID_source == `SIGNAL_SOURCE_IO_RX_B_0) ? {io_rx_b[0], 11'b0}:
-	       // (VID_source == `SIGNAL_SOURCE_IO_RX_B_1) ? {io_rx_b[1], 11'b0}:
-	       // {12'b0};
-
    wire [11:0] TRG_signal = rx_b_a[11:0];
-   
-	       // (TRG_source == `SIGNAL_SOURCE_RX_A_A) ? rx_a_a[11:0] :
-	       // (TRG_source == `SIGNAL_SOURCE_RX_B_A) ? rx_b_a[11:0] :
-	       // (TRG_source == `SIGNAL_SOURCE_RX_A_B) ? rx_a_b[11:0] :
-	       // (TRG_source == `SIGNAL_SOURCE_RX_B_B) ? rx_b_b[11:0] :
-	       // (TRG_source == `SIGNAL_SOURCE_IO_RX_A_0) ? {io_rx_a[0], 11'b0}:
-	       // (TRG_source == `SIGNAL_SOURCE_IO_RX_A_1) ? {io_rx_a[1], 11'b0}:
-	       // (TRG_source == `SIGNAL_SOURCE_IO_RX_B_0) ? {io_rx_b[0], 11'b0}:
-	       // (TRG_source == `SIGNAL_SOURCE_IO_RX_B_1) ? {io_rx_b[1], 11'b0}:
-	       // {12'b0};
-
    wire [11:0] ARP_signal = rx_a_b[11:0];
-   
-	       // (ARP_source == `SIGNAL_SOURCE_RX_A_A) ? rx_a_a[11:0] :
-	       // (ARP_source == `SIGNAL_SOURCE_RX_B_A) ? rx_b_a[11:0] :
-	       // (ARP_source == `SIGNAL_SOURCE_RX_A_B) ? rx_a_b[11:0] :
-	       // (ARP_source == `SIGNAL_SOURCE_RX_B_B) ? rx_b_b[11:0] :
-	       // (ARP_source == `SIGNAL_SOURCE_IO_RX_A_0) ? {io_rx_a[0], 11'b0}:
-	       // (ARP_source == `SIGNAL_SOURCE_IO_RX_A_1) ? {io_rx_a[1], 11'b0}:
-	       // (ARP_source == `SIGNAL_SOURCE_IO_RX_B_0) ? {io_rx_b[0], 11'b0}:
-	       // (ARP_source == `SIGNAL_SOURCE_IO_RX_B_1) ? {io_rx_b[1], 11'b0}:
-	       // {12'b0};
-
    wire [11:0] ACP_signal = rx_b_b[11:0];
-   
-	       // (ACP_source == `SIGNAL_SOURCE_RX_A_A) ? rx_a_a[11:0] :
-	       // (ACP_source == `SIGNAL_SOURCE_RX_B_A) ? rx_b_a[11:0] :
-	       // (ACP_source == `SIGNAL_SOURCE_RX_A_B) ? rx_a_b[11:0] :
-	       // (ACP_source == `SIGNAL_SOURCE_RX_B_B) ? rx_b_b[11:0] :
-	       // (ACP_source == `SIGNAL_SOURCE_IO_RX_A_0) ? {io_rx_a[0], 11'b0}:
-	       // (ACP_source == `SIGNAL_SOURCE_IO_RX_A_1) ? {io_rx_a[1], 11'b0}:
-	       // (ACP_source == `SIGNAL_SOURCE_IO_RX_B_0) ? {io_rx_b[0], 11'b0}:
-	       // (ACP_source == `SIGNAL_SOURCE_IO_RX_B_1) ? {io_rx_b[1], 11'b0}:
-	       // {12'b0};
    
    // output of stage i of pipeline is sample_i, which is ready when strobe_i goes high
    
@@ -244,6 +188,9 @@ module usrp_marine_radar
    wire [15:0] sample_3;
 
    wire        new_mode;
+   // reg [11:0]  rrr;
+   // assign reg_1[11:0] = rrr;
+
    
    always @(posedge clk64)
      if(rx_dsp_reset)
@@ -257,6 +204,7 @@ module usrp_marine_radar
 	  ARP_strobe_since_last_ACP <= #1 1'b0;
 	  got_trig_since_last_ACP <= #1 1'b0;
 	  got_first_ACP <= #1 1'b0;
+          reg_1[15:0] <= #1 16'b000z000000010110;         
        end
      else
        begin
@@ -266,17 +214,20 @@ module usrp_marine_radar
           if (FEB_value_in_ready)
             begin
                latest_FEB_value_in <= #1 FEB_value_in;
+               reg_1[7:0] <= #1 FEB_value_in[7:0];
+               start_pipeline <= #1 enable_rx ? start_pipeline : 1'b1;
             end
           
 	  clock_ticks <= #1 clock_ticks + 64'd1;
 
 	  if (enable_rx)
 	    begin
-	       if ((~non_stop & trigger_strobe & ~pipeline_active) | (non_stop & ~pipeline_active))
+	       if ((~non_stop & trigger_strobe & ~pipeline_active) | (non_stop & ~pipeline_active) | (FEB_value_in_ready & ~pipeline_active))
 		 begin
 		    start_pipeline <= #1 1'b1;
 		    ticks_in_pulse <= #1 2'b0;
 		    got_trig_since_last_ACP <= #1 trigger_strobe;
+                    reg_1[8] <= #1 1'b1;                    
 		 end
 	       else
 		 begin
@@ -284,7 +235,7 @@ module usrp_marine_radar
 		    if (clk_decim)
 		      ticks_in_pulse <= #1 ticks_in_pulse + 2'b1;
 		 end
-	    end
+	    end // if (enable_rx)
 
 	  if (eventually_enable_rx)
 	    begin
@@ -365,25 +316,26 @@ module usrp_marine_radar
        .age(ticks_since_last_ACP),
        .prev_interval(ACP_interval));
 
-   spi spi_FEB_DAC // spi output to the front-end board dac
-     ( .clock(clk64), .reset(rx_dsp_reset),
+   spi_adis16209 spi_FEB_DAC // spi output to the front-end board dac
+     ( .clock(clk64),
+//       .debug (reg_1[7:0]),
+       .reset(rx_dsp_reset),
        .strobe_out (set_FEB_DAC),
-       .value_out (FEB_DAC),
        .strobe_in (FEB_value_in_ready),
+       .value_out (FEB_DAC),
        .value_in (FEB_value_in),
        .MOSI(FEB_DAC_DIN),
        .MISO(FEB_DAC_DOUT),
        .SCLCK(FEB_DAC_SCLCK),
-       .SYNC(FEB_DAC_SYNC));  
+       .CS(FEB_DAC_SYNC));  
 
    // decimate the clock
 
    decim clock_decim
-     ( .clock(clk64), .reset(rx_dsp_reset), .enable(pipeline_active), .init(start_pipeline),
-       .strobe_in(1'b1),
+     ( .reset(rx_dsp_reset), .enable(pipeline_active), .init(start_pipeline),
        .rate(decim_rate),
-       .strobe_out(clk_decim));
-
+       .clock_in(clk64),.clock_out(clk_decim));
+   
    // pipeline for sample handling
    // Stage 1: pick a data source depending on marine_radar_mode
 
@@ -476,7 +428,9 @@ module usrp_marine_radar
        .readback_4(clock_ticks[31:0]),.readback_5(clock_ticks[63:32]),.readback_6(n_trigs),.readback_7(32'hf0adf0ad)
        );
 
-   wire [15:0] reg_0,reg_1,reg_2,reg_3;
+//   wire [15:0] reg_0,reg_1,reg_2,reg_3;
+//   wire [15:0] reg_1 = io_rx_a [15:0];
+   
    master_control_marine_radar master_control_marine_radar
      ( .master_clk(clk64),.usbclk(usbclk),
        .serial_addr(serial_addr),.serial_data(serial_data),.serial_strobe(serial_strobe),
@@ -498,18 +452,16 @@ module usrp_marine_radar
        .n_samples(n_samples),
        .marine_radar_mode(marine_radar_mode),
        .new_mode(new_mode),
-       .signal_sources(signal_sources),
        .n_ACPs_per_sweep(n_ACPs_per_sweep),
        .use_ACP_for_sweeps(use_ACP_for_sweeps),
        .FEB_DAC(FEB_DAC),
        .set_FEB_DAC(set_FEB_DAC)
        );
       
-   io_pins io_pins
-     (.io_0(/* io_tx_a */),.io_1(io_rx_a),.io_2(/* io_tx_b */),.io_3(io_rx_b),
-      .reg_0(reg_0),.reg_1(reg_1),.reg_2(reg_2),.reg_3(reg_3),
-      .clock(clk64),.rx_reset(rx_dsp_reset),.tx_reset(/* tx_dsp_reset */),
-      .serial_addr(serial_addr),.serial_data(serial_data),.serial_strobe(serial_strobe));
+   // io_pins io_pins (.io_0(/* io_tx_a */),.io_1(io_rx_a),.io_2(/* io_tx_b */),.io_3(io_rx_b),
+   //                  .reg_0(reg_0),.reg_1(reg_1),.reg_2(reg_2),.reg_3(reg_3),
+   //                  .clock(clk64),.rx_reset(rx_dsp_reset),.tx_reset(/* tx_dsp_reset */),
+   //                  .serial_addr(serial_addr),.serial_data(serial_data),.serial_strobe(serial_strobe));
 
    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    // Misc Settings

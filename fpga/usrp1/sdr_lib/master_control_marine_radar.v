@@ -48,7 +48,6 @@ module master_control_marine_radar
     output wire [15:0] n_samples,
     output wire [2:0] marine_radar_mode,
     output wire new_mode,
-    output wire [31:0] signal_sources,
     output wire [15:0] n_ACPs_per_sweep,
     output wire use_ACP_for_sweeps,
     output wire [15:0] FEB_DAC,
@@ -107,9 +106,6 @@ module master_control_marine_radar
       
    // marine_radar mode
    setting_reg #(`FR_MARINE_RADAR_MODE) sr_marine_radar_mode(.clock(master_clk),.reset(rx_dsp_reset),.strobe(serial_strobe),.addr(serial_addr),.in(serial_data),.out(marine_radar_mode),.changed(new_mode));
-
-   // signal sources multiplex register
-   setting_reg #(`FR_SIGNAL_SOURCES) sr_signal_sources(.clock(master_clk),.reset(rx_dsp_reset),.strobe(serial_strobe),.addr(serial_addr),.in(serial_data),.out(signal_sources));
       
    // number of ACPs per sweep
    setting_reg #(`FR_NUM_ACPS_PER_SWEEP) sr_num_acps_per_sweep(.clock(master_clk),.reset(rx_dsp_reset),.strobe(serial_strobe),.addr(serial_addr),.in(serial_data),.out(n_ACPs_per_sweep));
