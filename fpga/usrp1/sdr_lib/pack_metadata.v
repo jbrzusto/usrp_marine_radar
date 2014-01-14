@@ -40,7 +40,7 @@ module pack_metadata
    
    parameter data_width = 16;
    parameter data_width_used = 12; // must be less than data_width!
-   parameter meta_data_width = 464;
+   parameter meta_data_width = 465;
    
 `define pack_width (data_width - data_width_used)
    

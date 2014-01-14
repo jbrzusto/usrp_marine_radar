@@ -29,7 +29,6 @@
 
 module spi_adis16209
   ( input                        clock,  // system clock
-    output reg [7:0]             debug, // debug register
     input                        reset,
     input wire                   strobe_out, // new value is available to be written
     output reg                   strobe_in,// new value is available to be read
@@ -78,11 +77,8 @@ module spi_adis16209
         if(reset)
           begin
 	     bit_count <= #1 1'b0;
-             debug[7] <= #1 1'b0;
              
-             debug[6:3] <= #1 bit_count[3:0];
              state <= #1 `SPI_STATE_IDLE;
-             debug[2:0] <= #1 `SPI_STATE_IDLE;
 
              strobe_in <= #1 1'b0;
              value_in <= #1 1'b0;
@@ -99,14 +95,11 @@ module spi_adis16209
                     strobe_in <= #1 1'b0;
                     if (strobe_out)
                       begin
-                         debug[7] <= #1 1'b1;
 	                 value_buff[word_size-1 : 0] <= #1 value_out[word_size-1 : 0];
                          bit_count <= #1 word_size;
-                         debug[6:3] <= #1 word_size;
                          CS <= #1 1'b0;
                          wait_counter <= #1 time_cs * `CLOCK_SCALE;
                          state <= #1 `SPI_STATE_WAIT_CS;
-                         debug[2:0] <= #1 `SPI_STATE_WAIT_CS;
 	              end
                  end // case: `SPI_STATE_IDLE
                
@@ -117,7 +110,6 @@ module spi_adis16209
                          SCLCK <= #1 1'b0;
                          wait_counter <= #1 time_dav * `CLOCK_SCALE;
                          state <= #1 `SPI_STATE_WAIT_DAV;
-                         debug[2:0] <= #1 `SPI_STATE_WAIT_DAV;
                       end
                     else
                       wait_counter <= #1 wait_counter - 1'b1;
@@ -131,9 +123,7 @@ module spi_adis16209
                          value_in <= #1 {value_in[word_size - 2:0], MISO}; // shift in LSB
                          value_buff <= #1 {value_buff[word_size - 2:0], 1'b0};
                          state <= #1 `SPI_STATE_WAIT_DSU;
-                         debug[2:0] <= #1 `SPI_STATE_WAIT_DSU;
                          wait_counter <= #1 time_dsu * `CLOCK_SCALE;
-                         debug[6:3] <= #1 bit_count[3:0];
                          bit_count <= #1 bit_count - 1'b1;
                       end // if (wait_counter == 0)
                     else
@@ -146,7 +136,6 @@ module spi_adis16209
                       begin
                          SCLCK <= #1 1'b1; // bring up clock line
                          state <= #1 `SPI_STATE_WAIT_DHD;
-                         debug[2:0] <= #1 `SPI_STATE_WAIT_DHD;
                          wait_counter <= #1 time_dhd * `CLOCK_SCALE;
                       end
                     else
@@ -162,13 +151,11 @@ module spi_adis16209
                               SCLCK <= #1 1'b0; // pull down clock line
                               state <= #1 `SPI_STATE_WAIT_DAV; 
                               wait_counter <= #1 time_dav * `CLOCK_SCALE;
-                              debug[2:0] <= #1 `SPI_STATE_WAIT_DAV;
                            end
                          else
                            begin
                               SCLCK <= #1 1'b1;
                               state <= #1 `SPI_STATE_WAIT_SFS;
-                              debug[2:0] <= #1 `SPI_STATE_WAIT_SFS;
                               wait_counter <= #1 time_sfs * `CLOCK_SCALE;
                               strobe_in <= #1 1'b1;
                            end // else: !if(|bit_count)
@@ -183,7 +170,6 @@ module spi_adis16209
                       begin
                          CS <= #1 1'b1;
                          state <= #1 `SPI_STATE_IDLE;
-                       debug[2:0] <= #1 `SPI_STATE_IDLE;
                       end
                     else
                       begin
