@@ -170,9 +170,9 @@ module usrp_marine_radar
    wire counter = settings[1];
 
    wire [11:0] VID_signal = rx_a_a[11:0];
-   wire [11:0] TRG_signal = rx_b_a[11:0];
-   wire [11:0] ARP_signal = rx_a_b[11:0];
-   wire [11:0] ACP_signal = rx_b_b[11:0];
+   wire [11:0] TRG_signal = {io_rx_a[3], 11'b0};
+   wire [11:0] ARP_signal = {io_rx_a[2], 11'b0};
+   wire [11:0] ACP_signal = {io_rx_a[1], 11'b0};
    
    // output of stage i of pipeline is sample_i, which is ready when strobe_i goes high
    
@@ -316,15 +316,12 @@ module usrp_marine_radar
        .age(ticks_since_last_ACP),
        .prev_interval(ACP_interval));
 
-   spi_adis16209 spi_FEB_DAC // spi output to the front-end board dac
+   spi_tidac124s085 spi_FEB_DAC // spi output to the front-end board dac
      ( .clock(clk64),
        .reset(rx_dsp_reset),
        .strobe_out (set_FEB_DAC),
-       .strobe_in (FEB_value_in_ready),
        .value_out (FEB_DAC),
-       .value_in (FEB_value_in),
        .MOSI(FEB_DAC_DIN),
-       .MISO(FEB_DAC_DOUT),
        .SCLCK(FEB_DAC_SCLCK),
        .CS(FEB_DAC_SYNC));  
 
